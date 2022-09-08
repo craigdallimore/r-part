@@ -1,3 +1,6 @@
+// https://github.com/rustwasm/wasm-bindgen/issues/2882
+#![allow(non_snake_case,non_upper_case_globals)]
+
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(start)]
