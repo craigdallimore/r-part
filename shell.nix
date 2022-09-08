@@ -4,7 +4,7 @@ let
   rust_channel = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain;
 in pkgs.mkShell {
 
-    name = "steering";
+    name = "particles";
 
     # Required for rust-analyzer?
     RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
@@ -17,6 +17,8 @@ in pkgs.mkShell {
     ];
 
     buildInputs = [
+      pkgs.pkg-config # Required for compiling on linux
+      pkgs.openssl    # Required for compiling on linux
       pkgs.rustfmt
       pkgs.simple-http-server # For development
     ];
