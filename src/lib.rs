@@ -7,7 +7,7 @@ use wasm_bindgen::prelude::*;
 pub fn main() -> Result<(), JsValue> {
   use web_sys::console;
 
-  console::log_1(&"Running WASM".into());
+  console::log_1(&"Running WASM :)".into());
 
   Ok(())
 }

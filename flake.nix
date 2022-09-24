@@ -23,19 +23,22 @@
       {
         devShells.default = mkShell {
           buildInputs = [
+            simple-http-server
             stable-rust
             rust-analyzer
             wasm-pack
             openssl
             pkgconfig
-            exa
-            fd
             rust-bin.beta.latest.default
           ];
 
           shellHook = ''
-            alias ls=exa
-            alias find=fd
+            alias gst='git status'
+            alias gd='git diff'
+            alias gc='git commit'
+            :q() {
+              exit
+            }
           '';
         };
       }
