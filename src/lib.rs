@@ -49,12 +49,22 @@ impl Emitter {
     }
   }
 
-  fn resetParticle(self: Self, p: &mut Particle) -> () {
+  fn add_particle(self: &mut Self) -> () {
+    let mut p = Particle::new();
+    self.reset_particle(&mut p);
+    self.particles.push(p);
+  }
+
+  fn reset_particle(self: &Self, p: &mut Particle) -> () {
 
     let mut rng = rand::thread_rng();
-    let x:f32 = self.initialForce.0 + rng.gen() * self.initialRange.0;
-    let y:f32 = self.initialForce.1 + rng.gen() * self.initialRange.1;
-    let energy = self.initialEnergyRange + run.gen() * self.initialEnergyRange;
+    let gen1: f32 = rng.gen();
+    let gen2: f32 = rng.gen();
+    let gen3: f32 = rng.gen();
+
+    let x:f32 = self.initialForce.0 + gen1 * self.initialRange.0;
+    let y:f32 = self.initialForce.1 + gen2 * self.initialRange.1;
+    let energy = self.initialEnergyRange + gen3 * self.initialEnergyRange;
 
     p.velocity.0 = x;
     p.velocity.1 = y;
@@ -66,22 +76,7 @@ impl Emitter {
 
   }
 
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 #[wasm_bindgen(start)]
 pub fn main() -> Result<(), JsValue> {
