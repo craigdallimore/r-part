@@ -52,9 +52,9 @@ impl Emitter {
   fn resetParticle(self: Self, p: &mut Particle) -> () {
 
     let mut rng = rand::thread_rng();
-    let x:f32 = self.initialForce.0 + rng.gen() + self.initialRange.0;
-    let y:f32 = self.initialForce.1 + rng.gen() + self.initialRange.1;
-    let energy = self.initialEnergyRange + run.gen() + self.initialEnergyRange;
+    let x:f32 = self.initialForce.0 + rng.gen() * self.initialRange.0;
+    let y:f32 = self.initialForce.1 + rng.gen() * self.initialRange.1;
+    let energy = self.initialEnergyRange + run.gen() * self.initialEnergyRange;
 
     p.velocity.0 = x;
     p.velocity.1 = y;
