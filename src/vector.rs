@@ -1,3 +1,4 @@
+#[derive(Debug, Clone)]
 pub struct Vec2 (pub f32, pub f32);
 
 impl Vec2 {

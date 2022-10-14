@@ -21,7 +21,7 @@ pub struct Emitter {
 }
 
 impl Emitter {
-  fn new() -> Emitter {
+  pub fn new() -> Emitter {
     Emitter {
       position: Vec2::new(),
       initial_force: Vec2::new(),
@@ -40,7 +40,7 @@ impl Emitter {
     self.particles.push(p);
   }
 
-  fn reset_particle(self: &Self, p: &mut Particle) -> () {
+  fn reset_particle<'a>(self: &Self, p: &'a mut Particle) -> &'a mut Particle {
 
     let mut rng = rand::thread_rng();
     let gen1: f32 = rng.gen();
@@ -49,38 +49,42 @@ impl Emitter {
 
     let x:f32 = self.initial_force.0 + gen1 * self.initial_range.0;
     let y:f32 = self.initial_force.1 + gen2 * self.initial_range.1;
-    let energy = self.initial_energy_range + gen3 * self.initial_energy_range;
+    let energy = self.initial_energy + gen3 * self.initial_energy_range;
 
     p.velocity.0 = x;
     p.velocity.1 = y;
     p.position.0 = self.position.0;
     p.position.1 = self.position.1;
-    p.lastPosition.0 = self.position.0;
-    p.lastPosition.1 = self.position.1;
+    p.last_position.0 = self.position.0;
+    p.last_position.1 = self.position.1;
     p.energy = energy;
+    p
 
   }
 
-  fn update_particle(self: &Self, p: &mut Particle, time: f32, dimensions: &Vec2) {
+  fn update_particle(self: &Self, p: &Particle, time: f32, dimensions: &Vec2) -> Particle {
+
+    let mut p = p.clone();
+
     if p.energy <= 0.0 || is_outside_area(&p.position, &dimensions) {
-      self.reset_particle(p);
-      return;
+      self.reset_particle(&mut p);
     }
 
     //vec.add(p.velocity, vec.multiply([...this.steering], time));
 
-    p.lastPosition.0 = p.position.0;
-    p.lastPosition.1 = p.position.1;
+    p.last_position.0 = p.position.0;
+    p.last_position.1 = p.position.1;
 
     // Mutate position
     //vec.add(p.position, vec.multiply([...p.velocity], time));
 
     // Mutate energy
     p.energy = p.energy - time;
+    p
 
   }
 
-  fn update(self: &mut Self, time: f32, dimensions: Vec2) {
+  pub fn update(self: &mut Self, time: f32, dimensions: Vec2) {
     if self.particles.len() < self.max_particles {
       // Currently adding one particle per update
       // Potential improvements:
@@ -89,10 +93,10 @@ impl Emitter {
       self.add_particle();
     }
 
-    for i in 1..self.particles.len() {
-      let &mut particle = &mut self.particles[i];
-      self.update_particle(&mut particle, time, &dimensions);
-    }
+    self.particles = self.particles
+        .iter()
+        .map(|p| self.update_particle(p, time, &dimensions))
+        .collect();
 
   }
 
