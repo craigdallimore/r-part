@@ -2,7 +2,7 @@ use rand::prelude::*;
 use crate::particle::*;
 use crate::vector::*;
 
-fn is_outside_area(point: &Vec2, area: &Vec2) -> bool {
+fn is_outside_area(point: &Vect2d, area: &Vect2d) -> bool {
   return point.0 < 0.0 ||
     point.1 < 0.0 ||
     point.0 > area.0 ||
@@ -10,27 +10,27 @@ fn is_outside_area(point: &Vec2, area: &Vec2) -> bool {
 }
 
 pub struct Emitter {
-  position: Vec2,
-  initial_force: Vec2,
-  initial_range: Vec2,
-  initial_energy: f32,
-  initial_energy_range: f32,
+  position: Vect2d,
+  initial_force: Vect2d,
+  initial_range: Vect2d,
+  initial_energy: f64,
+  initial_energy_range: f64,
   max_particles: usize,
   particles: Vec<Particle>,
-  steering: Vec2,
+  steering: Vect2d,
 }
 
 impl Emitter {
   pub fn new() -> Emitter {
     Emitter {
-      position: Vec2::new(),
-      initial_force: Vec2::new(),
-      initial_range: Vec2::new(),
+      position: Vect2d::new(),
+      initial_force: Vect2d::new(),
+      initial_range: Vect2d::new(),
       initial_energy: 0.0,
       initial_energy_range: 0.0,
       max_particles: 0,
       particles: Vec::new(),
-      steering: Vec2::new(),
+      steering: Vect2d::new(),
     }
   }
 
@@ -43,12 +43,12 @@ impl Emitter {
   fn reset_particle<'a>(self: &Self, p: &'a mut Particle) -> &'a mut Particle {
 
     let mut rng = rand::thread_rng();
-    let gen1: f32 = rng.gen();
-    let gen2: f32 = rng.gen();
-    let gen3: f32 = rng.gen();
+    let gen1: f64 = rng.gen();
+    let gen2: f64 = rng.gen();
+    let gen3: f64 = rng.gen();
 
-    let x:f32 = self.initial_force.0 + gen1 * self.initial_range.0;
-    let y:f32 = self.initial_force.1 + gen2 * self.initial_range.1;
+    let x:f64 = self.initial_force.0 + gen1 * self.initial_range.0;
+    let y:f64 = self.initial_force.1 + gen2 * self.initial_range.1;
     let energy = self.initial_energy + gen3 * self.initial_energy_range;
 
     p.velocity.0 = x;
@@ -62,7 +62,7 @@ impl Emitter {
 
   }
 
-  fn update_particle(self: &Self, p: &Particle, time: f32, dimensions: &Vec2) -> Particle {
+  fn update_particle(self: &Self, p: &Particle, time: f64, dimensions: &Vect2d) -> Particle {
 
     let mut p = p.clone();
 
@@ -70,13 +70,13 @@ impl Emitter {
       self.reset_particle(&mut p);
     }
 
-    //vec.add(p.velocity, vec.multiply([...this.steering], time));
+    p.velocity = p.velocity + (self.steering * time);
 
     p.last_position.0 = p.position.0;
     p.last_position.1 = p.position.1;
 
     // Mutate position
-    //vec.add(p.position, vec.multiply([...p.velocity], time));
+    p.position = p.position + (p.velocity * time);
 
     // Mutate energy
     p.energy = p.energy - time;
@@ -84,7 +84,7 @@ impl Emitter {
 
   }
 
-  pub fn update(self: &mut Self, time: f32, dimensions: Vec2) {
+  pub fn update(self: &mut Self, time: f64, dimensions: Vect2d) {
     if self.particles.len() < self.max_particles {
       // Currently adding one particle per update
       // Potential improvements:
