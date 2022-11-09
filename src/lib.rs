@@ -17,7 +17,7 @@ pub fn main() -> Result<(), JsValue> {
   console::log_1(&"Running WASM :)".into());
 
   let mut e = Emitter::new();
-  e.update(0.0, Vec2::new());
+  e.update(0.0, Vect2d::new());
 
   Ok(())
 }

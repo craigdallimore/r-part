@@ -1,8 +1,10 @@
+
 use std::ops;
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Vect2d(pub f64, pub f64);
 
+#[allow(dead_code)]
 impl Vect2d {
     pub fn new() -> Vect2d {
       Vect2d(0.0, 0.0)
