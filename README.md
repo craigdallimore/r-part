@@ -7,14 +7,14 @@ This is a rust application for playing with particle effects.
 ### To start a server
 
 ```bash
-# be in nix-shell
+# be in nix develop
 simple-http-server -p 8888
 ```
 
 ### To build
 
 ```bash
-# be in nix-shell
+# be in nix develop
 wasm-pack build --target web
 ```
 

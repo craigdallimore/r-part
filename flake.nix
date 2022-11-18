@@ -27,6 +27,7 @@
             stable-rust
             rust-analyzer
             wasm-pack
+            wasm-bindgen-cli # Needed for wasm-pack to work
             openssl
             pkgconfig
             rust-bin.beta.latest.default
