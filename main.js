@@ -1,3 +1,15 @@
-import init from "./pkg/rust_particles.js";
+import init, { onTick } from "./pkg/rust_particles.js";
 
-init();
+await init();
+
+function frame(time) {
+
+  window.requestAnimationFrame(nextTime => {
+    const tick = nextTime - time;
+    onTick(tick / 1000);
+    frame(tick);
+  });
+
+}
+
+frame(0);

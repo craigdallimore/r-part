@@ -10,6 +10,15 @@ use crate::vector::*;
 
 use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
+pub fn onTick(x:f64) {
+  use web_sys::console;
+
+  let t:JsValue = x.into();
+  console::log_2(&"tick {}".into(), &t);
+
+}
+
 #[wasm_bindgen(start)]
 pub fn main() -> Result<(), JsValue> {
   use web_sys::console;
