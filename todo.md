@@ -1,5 +1,6 @@
 # TODO
 
+- [ ] Make rAF loop in JS-land, which calls rust with a time interval
 - [ ] Get livereload working with wasm
 - [ ] Decide on whether to use canvas, webGL or webGPU
   - [ ] Probably canvas - the others are likely to be too great a distraction
