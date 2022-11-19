@@ -3,6 +3,9 @@ name = "rust-particles"
 version = "0.1.0"
 authors = ["craigdallimore <decoy9697@gmail.com>"]
 edition = "2021"
+description = "Learning about rust, wasm and graphics"
+repository = "https://github.com/craigdallimore/r-part"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
