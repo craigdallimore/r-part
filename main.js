@@ -1,7 +1,9 @@
-import init, { onTick } from "./pkg/rust_particles.js";
+import init from "./pkg/rust_particles.js";
 
 await init();
 
+//console.log(onTick(10));
+/*
 function frame(time) {
 
   window.requestAnimationFrame(nextTime => {
@@ -13,3 +15,4 @@ function frame(time) {
 }
 
 frame(0);
+*/

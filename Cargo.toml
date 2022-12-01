@@ -24,11 +24,11 @@ getrandom = { version = "0.2", features = ["js"] }
 version = "0.3.59"
 features = [
   #'CanvasRenderingContext2d',
-  #'Document',
+  'Document',
   #'Element',
-  #'HtmlElement',
+  'HtmlElement',
   #'HtmlCanvasElement',
   #'Node',
-  #'Window',
+  'Window',
   'console',
 ]
