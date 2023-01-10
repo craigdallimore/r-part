@@ -6,7 +6,6 @@ mod vector;
 mod particle;
 
 use js_sys::Function;
-use web_sys::HtmlElement;
 
 //use crate::emitter::*;
 //use crate::vector::*;
@@ -16,31 +15,22 @@ use std::rc::Rc;
 use wasm_bindgen::JsCast;
 use wasm_bindgen::prelude::*;
 
-
-fn setup_clicker() {
+fn init() {
   use web_sys::console; // import raw API bindings
 
-  let mut clicks = 0;
-
   let window = web_sys::window().expect("should have a window");
-  let document = window.document().expect("should have a document");
-
-  let a = Closure::<dyn FnMut(web_sys::EventTarget)>::new(move |e: web_sys::EventTarget| {
-    clicks += 1;
-    console::log_2(&clicks.into(), &e.into());
-  });
 
   let x:Rc<RefCell<Option<Closure<dyn FnMut(f64) -> ()>>>> = Rc::new(RefCell::new(None));
   let y = x.clone();
 
-  let mut tick:f64 = 0.0;
+  let mut lastTick:f64 = 0.0;
 
-  *y.borrow_mut() =  Some(Closure::<dyn FnMut(f64)>::new(move |t: f64| {
+  *y.borrow_mut() = Some(Closure::<dyn FnMut(f64)>::new(move |time: f64| {
 
-    let tt = t - tick;
-    tick = t;
+    let tick = time - lastTick;
+    lastTick = time;
 
-    console::log_2(&"tick".into(), &tt.into());
+    console::log_2(&"tick".into(), &tick.into());
 
     let xbinding = x.borrow();
     let xclo: &Closure<dyn FnMut(f64) -> ()> = xbinding.as_ref().unwrap();
@@ -59,15 +49,6 @@ fn setup_clicker() {
 
   window.request_animation_frame(jsfuncRef).expect("raf error");
 
-  document.get_element_by_id("clicker")
-    .expect("should have #clicker")
-    .dyn_ref::<HtmlElement>() // runtime checked cast to HtmlElement
-    .expect("#clicker should be an element")
-    .set_onclick(Some(a.as_ref().unchecked_ref()));
-
-  a.forget(); // Prevent a from being invalidated when dropped.
-  //b.forget();
-
 }
 
 #[wasm_bindgen(start)]
@@ -76,7 +57,7 @@ pub fn main() -> Result<(), JsValue> {
 
   console::log_1(&"Running WASM :)".into());
 
-  setup_clicker();
+  init();
 
   Ok(())
 }
