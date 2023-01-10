@@ -1,6 +1,7 @@
+use serde::Serialize;
 use crate::vector::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct Particle {
   pub position: Vect2d,
   pub velocity: Vect2d,

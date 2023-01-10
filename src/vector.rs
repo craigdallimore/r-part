@@ -1,7 +1,7 @@
-
+use serde::Serialize;
 use std::ops;
 
-#[derive(Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, Debug, PartialEq, Serialize)]
 pub struct Vect2d(pub f64, pub f64);
 
 #[allow(dead_code)]

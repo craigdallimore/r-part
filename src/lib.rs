@@ -5,18 +5,46 @@ mod emitter;
 mod vector;
 mod particle;
 
+use emitter::Emitter;
 use js_sys::Function;
-
-//use crate::emitter::*;
-//use crate::vector::*;
+use vector::Vect2d;
 
 use std::cell::RefCell;
 use std::rc::Rc;
 use wasm_bindgen::JsCast;
 use wasm_bindgen::prelude::*;
+use serde::Serialize;
+
+#[derive(Serialize)]
+struct State {
+  emitter: Emitter
+}
+
+impl State {
+  fn new() -> State {
+    State {
+      emitter: Emitter::new()
+    }
+  }
+}
+
+fn update_state(state: &mut State, tick: f64) -> &State {
+  state.emitter.update(tick, Vect2d::new());
+  state
+}
+
+fn on_tick(tick: f64) {
+  use web_sys::console;
+
+  let mut initial_state = State::new();
+
+
+  let state = update_state(&mut initial_state, tick);
+  let serialized = serde_json::to_string(&state).unwrap();
+  console::log_2(&"state".into(), &serialized.into());
+}
 
 fn init() {
-  use web_sys::console; // import raw API bindings
 
   let window = web_sys::window().expect("should have a window");
 
@@ -29,8 +57,7 @@ fn init() {
 
     let tick = time - lastTick;
     lastTick = time;
-
-    console::log_2(&"tick".into(), &tick.into());
+    on_tick(tick);
 
     let xbinding = x.borrow();
     let xclo: &Closure<dyn FnMut(f64) -> ()> = xbinding.as_ref().unwrap();

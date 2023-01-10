@@ -1,3 +1,4 @@
+use serde::Serialize;
 use rand::prelude::*;
 use crate::particle::*;
 use crate::vector::*;
@@ -9,6 +10,7 @@ fn is_outside_area(point: &Vect2d, area: &Vect2d) -> bool {
     point.0 > area.1;
 }
 
+#[derive(Serialize)]
 pub struct Emitter {
   position: Vect2d,
   initial_force: Vect2d,
