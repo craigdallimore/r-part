@@ -15,6 +15,7 @@ license = "MIT"
 crate-type = ["cdylib"]
 
 [dependencies]
+game-loop = "0.10.1"
 wasm-bindgen = "0.2.82"
 js-sys = "0.3.59"
 rand = "0.8.5"
