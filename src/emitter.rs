@@ -18,7 +18,7 @@ pub struct Emitter {
   initial_energy: f64,
   initial_energy_range: f64,
   pub max_particles: usize,
-  particles: Vec<Particle>,
+  pub particles: Vec<Particle>,
   steering: Vect2d,
 }
 
