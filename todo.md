@@ -4,6 +4,9 @@
   - [ ] update rust state on tick
   - [ ] update canvas based on state
 
+Existing update/render example: https://github.com/tuzz/game-loop/blob/master/src/helper.rs#L22-L51
+A discussion with some links https://users.rust-lang.org/t/how-can-i-make-game-loop-with-rust-to-wasm/29873/5
+Gameloop library: https://github.com/tuzz/game-loop/blob/master/examples/using_wasm/src/main.rs
 
 
 - [ ] Get livereload working with wasm
