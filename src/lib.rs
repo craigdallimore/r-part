@@ -65,9 +65,7 @@ fn get_context() -> web_sys::CanvasRenderingContext2d {
 
 #[wasm_bindgen(start)]
 pub fn main() -> Result<(), JsValue> {
-  use web_sys::console;
 
-  console::log_1(&"Running WASM :)".into());
   let context = get_context();
   let mut game = State::new();
 
