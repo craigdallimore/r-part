@@ -12,14 +12,14 @@ fn is_outside_area(point: &Vect2d, area: &Vect2d) -> bool {
 
 #[derive(Serialize)]
 pub struct Emitter {
-  position: Vect2d,
-  initial_force: Vect2d,
-  initial_range: Vect2d,
-  initial_energy: f64,
-  initial_energy_range: f64,
+  pub position: Vect2d,
+  pub initial_force: Vect2d,
+  pub initial_range: Vect2d,
+  pub initial_energy: f64,
+  pub initial_energy_range: f64,
   pub max_particles: usize,
   pub particles: Vec<Particle>,
-  steering: Vect2d,
+  pub steering: Vect2d,
 }
 
 impl Emitter {

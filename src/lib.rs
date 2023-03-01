@@ -4,43 +4,53 @@
 mod emitter;
 mod vector;
 mod particle;
+mod draw;
 
 use game_loop::game_loop;
 use emitter::Emitter;
 use vector::Vect2d;
+use draw::draw_scene;
 
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use serde::Serialize;
 
 #[derive(Serialize)]
-struct State {
-  emitter: Emitter
+pub struct State {
+  emitter: Emitter,
+  dimensions: Vect2d
 }
 
 impl State {
-  fn new() -> State {
+  fn new(dimensions: Vect2d) -> State {
+    let mut e = Emitter::new();
+
+    e.position = Vect2d(100.0, 100.0);
+    e.steering = Vect2d(0.0, 60.0);
+    e.max_particles = 240;
+    e.initial_force = Vect2d(-30.0, -30.0);
+    e.initial_range = Vect2d(50.0, 10.0);
+    e.initial_energy = 10.0;
+    e.initial_energy_range = 3.0;
+
     State {
-      emitter: Emitter::new()
+      emitter: e,
+      dimensions
     }
   }
 
   fn update(&mut self, time: f64) {
-    let dimensions = Vect2d(200.0, 200.0);
-    self.emitter.update(time, dimensions);
+    self.emitter.update(time, self.dimensions);
   }
 
   fn render(&self, ctx: &web_sys::CanvasRenderingContext2d) {
 
-    use web_sys::console;
+    //use web_sys::console;
 
-    let serialized = serde_json::to_string(&self.emitter.particles).unwrap();
-    console::log_2(&"state".into(), &serialized.into());
+    //let serialized = serde_json::to_string(&self.emitter.particles).unwrap();
+    //console::log_2(&"state".into(), &serialized.into());
 
-    ctx.begin_path();
-    ctx.move_to(100.0, 0.0);
-    ctx.line_to(100.0, 200.0);
-    ctx.stroke();
+    draw_scene(ctx, self);
 
   }
 }
@@ -66,8 +76,9 @@ fn get_context() -> web_sys::CanvasRenderingContext2d {
 #[wasm_bindgen(start)]
 pub fn main() -> Result<(), JsValue> {
 
+  let dimensions = Vect2d(400.0, 400.0);
   let context = get_context();
-  let mut game = State::new();
+  let mut game = State::new(dimensions);
 
   game.emitter.max_particles = 100;
 
