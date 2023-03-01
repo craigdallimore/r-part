@@ -26,11 +26,11 @@ serde_json = "1.0.91"                          # A JSON serialization file forma
 [dependencies.web-sys]
 version = "0.3.59"
 features = [
-  #'CanvasRenderingContext2d',
+  'CanvasRenderingContext2d',
   'Document',
-  #'Element',
+  'Element',
   'HtmlElement',
-  #'HtmlCanvasElement',
+  'HtmlCanvasElement',
   #'Node',
   'Window',
   'console',
