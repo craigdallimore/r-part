@@ -45,11 +45,6 @@ impl State {
 
   fn render(&self, ctx: &web_sys::CanvasRenderingContext2d) {
 
-    //use web_sys::console;
-
-    //let serialized = serde_json::to_string(&self.emitter.particles).unwrap();
-    //console::log_2(&"state".into(), &serialized.into());
-
     draw_scene(ctx, self);
 
   }
