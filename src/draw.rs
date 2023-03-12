@@ -1,19 +1,19 @@
 use crate::{State, particle::Particle};
+use web_sys::{WebGl2RenderingContext};
 
 pub fn draw_scene(
-  ctx: &web_sys::CanvasRenderingContext2d,
+  ctx: &web_sys::WebGl2RenderingContext,
   state: &State
 ) -> () {
 
-  ctx.clear_rect(0.0, 0.0, state.dimensions.0, state.dimensions.1);
-  ctx.set_stroke_style(&"hlsa(123, 50, 100, 1)".into());
-  ctx.save();
-  ctx.begin_path();
-  ctx.move_to(100.0, 0.0);
-  ctx.line_to(100.0, 100.0);
-  ctx.close_path();
-  ctx.stroke();
-  ctx.restore();
+  /*
+  ctx.clear(
+    0.0,
+    0.0,
+    state.dimensions.0,
+    state.dimensions.1
+  );
+  */
 
   for p in state.emitter.particles.iter() {
     draw_particle(ctx, &p);
@@ -22,10 +22,11 @@ pub fn draw_scene(
 }
 
 fn draw_particle(
-  ctx: &web_sys::CanvasRenderingContext2d,
+  ctx: &web_sys::WebGl2RenderingContext,
   p: &Particle
 ) -> () {
 
+  /*
   ctx.save();
   ctx.set_stroke_style(&"hsla(10, 10, 10, 1)".into());
   ctx.begin_path();
@@ -34,5 +35,6 @@ fn draw_particle(
   ctx.stroke();
   ctx.close_path();
   ctx.restore();
+  */
 
 }
