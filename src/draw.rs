@@ -17,15 +17,14 @@ pub fn draw_scene(
   ctx.clear(WebGl2RenderingContext::COLOR_BUFFER_BIT);
 
   let count = state.emitter.particles.len();
+  let count = 2;
 
-  // TODO can we get rid ofthis clone?
-  let iter = state.emitter.particles.clone().into_iter();
-
-  let arr = iter.fold(Vec::new(), |mut acc, p| {
+  let arr = state.emitter.particles.iter().fold(Vec::new(), |mut acc, p| {
     acc.push(p.position.0);
     acc.push(p.position.1);
     acc
   });
+  let arr = [1200.5, 1200.5, 0.75, 0.75];
   let vertices: &[f64] = &arr[..];
 
   unsafe {

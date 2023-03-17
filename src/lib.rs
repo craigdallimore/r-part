@@ -53,7 +53,7 @@ impl State {
 #[wasm_bindgen(start)]
 pub fn main() -> Result<(), JsValue> {
 
-  let dimensions = Vect2d(300.0, 400.0);
+  let dimensions = Vect2d(400.0, 400.0);
   let mut game = State::new(dimensions);
   let ctx = get_context()?;
 
