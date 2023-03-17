@@ -78,7 +78,9 @@ pub fn get_context() -> Result<WebGl2RenderingContext, JsValue> {
     .unwrap()
     .dyn_into::<WebGl2RenderingContext>()?;
 
-  let ts =
+  let vert_shader = compile_shader(
+    &ctx,
+    WebGl2RenderingContext::VERTEX_SHADER,
     r##"#version 300 es
       // an attribute is an input (in) to a vertex shader.
       // It will receive data from a buffer
@@ -100,24 +102,7 @@ pub fn get_context() -> Result<WebGl2RenderingContext, JsValue> {
         // gl_Position is a special variable a vertex shader is responsible for setting
         gl_Position = vec4(clipspace * vec2(1, -1), 0, 1);
       }
-    "##;
-
-  let orig =
-    r##"#version 300 es
-      // an attribute is an input (in) to a vertex shader.
-      // It will receive data from a buffer
-      in vec4 a_position;
-
-      void main() {
-        gl_Position = a_position;
-      }
-    "##;
-
-  let vert_shader = compile_shader(
-    &ctx,
-    WebGl2RenderingContext::VERTEX_SHADER,
-   // orig
-    ts
+    "##
   )?;
 
   let frag_shader = compile_shader(
@@ -167,7 +152,7 @@ pub fn get_context() -> Result<WebGl2RenderingContext, JsValue> {
   // Configure the attribute and bind the current ARRAY_BUFFER to the attribute.
   ctx.vertex_attrib_pointer_with_i32(
     position_attribute_location as u32,
-    3,
+    2,
     WebGl2RenderingContext::FLOAT,
     false,
     0,
