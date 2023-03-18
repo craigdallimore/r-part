@@ -65,6 +65,12 @@ pub fn link_program(
 
 }
 
+fn get_shader_string_by_id(id: String) -> String {
+  let document = web_sys::window().unwrap().document().unwrap();
+  let element = document.get_element_by_id(&id).unwrap().dyn_into::<web_sys::Element>().unwrap();
+  element.text_content().unwrap()
+}
+
 pub fn get_context() -> Result<WebGl2RenderingContext, JsValue> {
 
   let document = web_sys::window().unwrap().document().unwrap();
@@ -78,46 +84,20 @@ pub fn get_context() -> Result<WebGl2RenderingContext, JsValue> {
     .unwrap()
     .dyn_into::<WebGl2RenderingContext>()?;
 
+  let vert_shader_content = get_shader_string_by_id(String::from("vs"));
+
   let vert_shader = compile_shader(
     &ctx,
     WebGl2RenderingContext::VERTEX_SHADER,
-    r##"#version 300 es
-      // an attribute is an input (in) to a vertex shader.
-      // It will receive data from a buffer
-      in vec2 a_position;
-
-      uniform vec2 u_resolution;
-
-      void main() {
-
-        // convert the position from pixels to 0.0 to 0.1
-        vec2 zeroToOne = a_position / u_resolution;
-
-        // convert from 0->1 to 0->2
-        vec2 zeroToTwo = zeroToOne * 2.0;
-
-        // convert from 0->2 to -1->1
-        vec2 clipspace = zeroToTwo - 1.0;
-
-        // gl_Position is a special variable a vertex shader is responsible for setting
-        gl_Position = vec4(clipspace * vec2(1, -1), 0, 1);
-      }
-    "##
+    &vert_shader_content
   )?;
+
+  let frag_shader_content = get_shader_string_by_id(String::from("fs"));
 
   let frag_shader = compile_shader(
     &ctx,
     WebGl2RenderingContext::FRAGMENT_SHADER,
-    r##"#version 300 es
-
-      precision highp float;
-      out vec4 outColor;
-
-      void main() {
-        outColor = vec4(1, 1, 1, 1);
-      }
-
-    "##,
+    &frag_shader_content
   )?;
 
   let program = link_program(

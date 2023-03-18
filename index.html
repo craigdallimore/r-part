@@ -7,7 +7,39 @@
     <title>Particles</title>
   </head>
   <body>
-    <canvas id="canvas" width="400" height="400"></canvas>
+    <script id="vs" type="x-shader/x-vertex">#version 300 es
+      // an attribute is an input (in) to a vertex shader.
+      // It will receive data from a buffer
+      in vec2 a_position;
+
+      uniform vec2 u_resolution;
+
+      void main() {
+
+        // convert the position from pixels to 0.0 to 0.1
+        vec2 zeroToOne = a_position / u_resolution;
+
+        // convert from 0->1 to 0->2
+        vec2 zeroToTwo = zeroToOne * 2.0;
+
+        // convert from 0->2 to -1->1
+        vec2 clipspace = zeroToTwo - 1.0;
+
+        // gl_Position is a special variable a vertex shader is responsible for setting
+        gl_Position = vec4(clipspace * vec2(1, -1), 0, 1);
+      }
+    </script>
+    <script id="fs" type="x-shader/x-fragment">#version 300 es
+
+      precision highp float;
+      out vec4 outColor;
+
+      void main() {
+        outColor = vec4(1, 1, 1, 1);
+      }
+
+    </script>
+    <canvas id="canvas" width="800" height="800"></canvas>
     <script type="module" src="./main.js"></script>
   </body>
 </html>

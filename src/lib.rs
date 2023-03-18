@@ -53,11 +53,11 @@ impl State {
 #[wasm_bindgen(start)]
 pub fn main() -> Result<(), JsValue> {
 
-  let dimensions = Vect2d(400.0, 400.0);
+  let dimensions = Vect2d(800.0, 800.0);
   let mut game = State::new(dimensions);
   let ctx = get_context()?;
 
-  game.emitter.max_particles = 100;
+  game.emitter.max_particles = 10000;
 
   game_loop(game, 240, 0.1, |g| {
     g.game.update(g.last_frame_time());
